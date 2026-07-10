@@ -1,0 +1,11 @@
+name = "pt-timeblock-llm"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Deploy:
+#   cd worker && npx wrangler deploy
+# This gives a URL like https://pt-timeblock-llm.<your-subdomain>.workers.dev
+#
+# To serve it from a branded route instead (optional), add a custom domain in the
+# Cloudflare dashboard (Workers & Pages → this worker → Settings → Domains &
+# Routes), e.g. llm.vipelex.com, then set VITE_LLM_PROXY_URL when building the web app.

@@ -1,0 +1,13 @@
+# Cloudflare Pages project config for the web app (timeblock.vipelex.com).
+# Lets the /api/subscribe Function persist lead-magnet signups to KV.
+name = "pt-timeblock"
+pages_build_output_dir = "deploy"
+compatibility_date = "2025-01-01"
+
+[[kv_namespaces]]
+binding = "SUBSCRIBERS"
+id = "a80fa5531b8f471d859e5a70f63e5ee6"
+
+# Optional: forward signups to Emailit by setting these as secrets/vars in the
+# Pages dashboard (Settings → Environment variables):
+#   EMAILIT_API_KEY, EMAILIT_LIST_ID

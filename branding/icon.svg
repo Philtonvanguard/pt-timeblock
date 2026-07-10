@@ -1,0 +1,26 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gold" x1="96" y1="120" x2="416" y2="392" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e6cc5c"/>
+      <stop offset="0.55" stop-color="#d4af37"/>
+      <stop offset="1" stop-color="#b8942a"/>
+    </linearGradient>
+    <linearGradient id="goldDim" x1="96" y1="120" x2="416" y2="392" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d4af37"/>
+      <stop offset="1" stop-color="#927121"/>
+    </linearGradient>
+  </defs>
+  <!-- Black tile -->
+  <rect width="512" height="512" rx="112" fill="#0a0a0a"/>
+  <rect x="6" y="6" width="500" height="500" rx="106" fill="none" stroke="#d4af37" stroke-opacity="0.30" stroke-width="3"/>
+  <!-- Timeline rail -->
+  <rect x="120" y="120" width="14" height="272" rx="7" fill="url(#goldDim)"/>
+  <!-- Time blocks (Gantt rows) -->
+  <rect x="150" y="138" width="210" height="44" rx="14" fill="url(#gold)"/>
+  <rect x="150" y="206" width="150" height="44" rx="14" fill="url(#gold)" fill-opacity="0.9"/>
+  <rect x="150" y="274" width="244" height="44" rx="14" fill="url(#gold)"/>
+  <rect x="150" y="342" width="120" height="44" rx="14" fill="url(#gold)" fill-opacity="0.8"/>
+  <!-- Milestone nodes on the rail -->
+  <circle cx="127" cy="160" r="13" fill="#0a0a0a" stroke="url(#gold)" stroke-width="7"/>
+  <circle cx="127" cy="296" r="13" fill="#0a0a0a" stroke="url(#gold)" stroke-width="7"/>
+</svg>

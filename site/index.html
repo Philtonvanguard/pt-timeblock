@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PT Time Block Timeline — One workspace for your day</title>
+  <meta name="description" content="Projects, tasks, time blocking, timeline, vision board, and health in one focused workspace. Runs in your browser, installs on your phone, works on desktop. Your data stays on your device." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="PT Time Block Timeline" />
+  <meta property="og:description" content="One focused workspace for projects, tasks, time blocking, timeline, vision board, and health. Open it on any device." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/pwa-512x512.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --panel: #121212;
+      --panel-2: #1a1a1a;
+      --gold: #d4af37;
+      --gold-bright: #e6cc5c;
+      --gold-dim: #927121;
+      --silver: #c0c0c0;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --faint: #64748b;
+      --line: rgba(255,255,255,0.07);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--black);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .gold { color: var(--gold-bright); }
+    .grad {
+      background: linear-gradient(110deg, var(--gold-bright), var(--silver));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 22px; border-radius: 10px; font-weight: 600; font-size: 15px;
+      transition: all .18s ease; cursor: pointer; border: 1px solid transparent;
+    }
+    .btn-gold { background: var(--gold); color: #0a0a0a; }
+    .btn-gold:hover { background: var(--gold-bright); transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--text); border-color: var(--line); }
+    .btn-ghost:hover { border-color: rgba(212,175,55,.4); color: #fff; }
+
+    /* Nav */
+    header.nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(12px); background: rgba(10,10,10,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; }
+    .brand img { width: 32px; height: 32px; border-radius: 8px; }
+    .brand small { display: block; font-size: 11px; color: var(--faint); font-weight: 500; letter-spacing: .04em; }
+
+    /* Hero */
+    .hero { padding: 84px 0 60px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before {
+      content: ''; position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
+      width: 680px; height: 460px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,175,55,.16), transparent 65%); pointer-events: none;
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px;
+      background: rgba(212,175,55,.12); border: 1px solid rgba(212,175,55,.28); color: var(--gold-bright);
+      font-size: 13px; font-weight: 600; margin-bottom: 26px;
+    }
+    .hero h1 { font-size: clamp(34px, 6vw, 60px); font-weight: 900; letter-spacing: -.02em; line-height: 1.05; }
+    .hero p.sub { font-size: clamp(16px, 2.4vw, 20px); color: var(--muted); max-width: 640px; margin: 22px auto 0; }
+    .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 36px; }
+    .trust { margin-top: 26px; font-size: 13.5px; color: var(--faint); }
+    .trust b { color: var(--silver); font-weight: 600; }
+
+    /* App preview frame */
+    .preview {
+      margin: 54px auto 0; max-width: 940px;
+      border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+      background: linear-gradient(180deg, var(--panel), var(--black));
+      box-shadow: 0 40px 120px rgba(0,0,0,.6), 0 0 0 1px rgba(212,175,55,.06);
+    }
+    .preview .bar { display: flex; gap: 7px; padding: 13px 16px; border-bottom: 1px solid var(--line); }
+    .preview .bar i { width: 11px; height: 11px; border-radius: 50%; background: #2e2e2e; }
+    .preview .bar i:first-child { background: var(--gold-dim); }
+    .mock { display: grid; grid-template-columns: 180px 1fr; min-height: 320px; }
+    .mock .side { border-right: 1px solid var(--line); padding: 16px 12px; }
+    .mock .side .row { height: 30px; border-radius: 7px; margin-bottom: 8px; background: rgba(255,255,255,.03); }
+    .mock .side .row.on { background: rgba(212,175,55,.16); border: 1px solid rgba(212,175,55,.3); }
+    .mock .body { padding: 22px; }
+    .mock .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+    .mock .card { height: 78px; border-radius: 10px; background: var(--panel-2); border: 1px solid var(--line); }
+    .mock .wide { height: 150px; border-radius: 10px; background: var(--panel-2); border: 1px solid var(--line); }
+
+    /* Sections */
+    section { padding: 70px 0; }
+    .eyebrow { color: var(--gold); font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+    h2.sec { font-size: clamp(26px, 4vw, 38px); font-weight: 800; letter-spacing: -.02em; margin: 10px 0 14px; }
+    .lead { color: var(--muted); max-width: 620px; font-size: 17px; }
+    .center { text-align: center; } .center .lead { margin: 0 auto; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 40px; }
+    .feature {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 24px;
+      transition: border-color .18s ease, transform .18s ease;
+    }
+    .feature:hover { border-color: rgba(212,175,55,.35); transform: translateY(-2px); }
+    .feature .ic {
+      width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; margin-bottom: 16px;
+      background: rgba(212,175,55,.12); color: var(--gold-bright); font-size: 20px;
+    }
+    .feature h3 { font-size: 17px; font-weight: 700; margin-bottom: 7px; }
+    .feature p { color: var(--muted); font-size: 14.5px; }
+
+    /* Download cards */
+    .downloads { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 40px; }
+    .dl {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 24px; text-align: center;
+    }
+    .dl .ic { font-size: 30px; margin-bottom: 12px; }
+    .dl h3 { font-size: 16px; font-weight: 700; }
+    .dl p { color: var(--faint); font-size: 13px; margin: 6px 0 16px; min-height: 34px; }
+    .dl .btn { width: 100%; justify-content: center; padding: 11px; font-size: 14px; }
+    .dl.primary { border-color: rgba(212,175,55,.4); background: linear-gradient(180deg, rgba(212,175,55,.07), var(--panel)); }
+    .soon { color: var(--faint); font-size: 13px; font-weight: 600; padding: 11px; display: block; }
+
+    /* Email capture */
+    .capture {
+      margin-top: 44px; background: linear-gradient(180deg, var(--panel), var(--black));
+      border: 1px solid var(--line); border-radius: 16px; padding: 40px 28px; text-align: center;
+    }
+    .capture form { display: flex; gap: 10px; max-width: 460px; margin: 22px auto 0; flex-wrap: wrap; }
+    .capture input {
+      flex: 1; min-width: 200px; padding: 13px 16px; border-radius: 10px;
+      background: var(--panel-2); border: 1px solid rgba(255,255,255,.12); color: #fff; font-size: 15px; outline: none;
+    }
+    .capture input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,175,55,.15); }
+    .capture .note { color: var(--faint); font-size: 12.5px; margin-top: 12px; }
+    .msg { margin-top: 14px; font-size: 14px; font-weight: 600; min-height: 20px; }
+    .msg.ok { color: var(--gold-bright); } .msg.err { color: #f87171; }
+
+    footer { border-top: 1px solid var(--line); padding: 36px 0; color: var(--faint); font-size: 13.5px; }
+    .foot-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+      .downloads { grid-template-columns: 1fr 1fr; }
+      .mock { grid-template-columns: 1fr; } .mock .side { display: none; }
+      .mock .cards { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .grid { grid-template-columns: 1fr; }
+      .downloads { grid-template-columns: 1fr; }
+      .nav .btn-ghost { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="/">
+        <img src="/pwa-192x192.png" alt="PT Time Block Timeline" />
+        <span>PT Time Block Timeline<small>by Vipelex</small></span>
+      </a>
+      <nav style="display:flex; gap:10px; align-items:center;">
+        <a class="btn btn-ghost" href="#download">Download</a>
+        <a class="btn btn-gold" href="/app/">Launch app</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <span class="pill">● One workspace. Every device.</span>
+        <h1>Stop switching apps.<br /><span class="grad">Run your whole day in one place.</span></h1>
+        <p class="sub">Projects, tasks, time blocking, timeline, a vision board, and health tracking, in a single focused workspace. Open it in your browser, install it on your phone, or run it on your desktop.</p>
+        <div class="cta-row">
+          <a class="btn btn-gold" href="/app/">Launch the app →</a>
+          <a class="btn btn-ghost" href="#download">Get the desktop app</a>
+        </div>
+        <p class="trust"><b>No account needed.</b> &nbsp;·&nbsp; <b>Works offline.</b> &nbsp;·&nbsp; <b>Your data stays on your device.</b></p>
+
+        <div class="preview" aria-hidden="true">
+          <div class="bar"><i></i><i></i><i></i></div>
+          <div class="mock">
+            <div class="side">
+              <div class="row on"></div><div class="row"></div><div class="row"></div>
+              <div class="row"></div><div class="row"></div><div class="row"></div>
+            </div>
+            <div class="body">
+              <div class="cards"><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div></div>
+              <div class="wide"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap center">
+        <span class="eyebrow">What's inside</span>
+        <h2 class="sec">Everything your day needs, nothing it doesn't</h2>
+        <p class="lead">Each module is built to do one job well. Together they replace a stack of half-used apps.</p>
+        <div class="grid" style="text-align:left;">
+          <div class="feature"><div class="ic">▦</div><h3>Dashboard</h3><p>Your day at a glance. Active projects, tasks due, time blocks, and health progress in one view.</p></div>
+          <div class="feature"><div class="ic">▤</div><h3>Projects</h3><p>Kanban-style project tracking with status, milestones, and optional AI planning.</p></div>
+          <div class="feature"><div class="ic">☑</div><h3>Tasks</h3><p>Full task management with subtasks, priorities, due dates, tags, and filtering.</p></div>
+          <div class="feature"><div class="ic">◷</div><h3>Time Blocking</h3><p>A visual daily grid for blocking focused work sessions and protecting deep work.</p></div>
+          <div class="feature"><div class="ic">⎇</div><h3>Timeline</h3><p>A project timeline with milestone tracking and deadline visualization.</p></div>
+          <div class="feature"><div class="ic">▢</div><h3>Vision Board</h3><p>A drag-and-drop canvas for images, quotes, and goals across multiple boards.</p></div>
+          <div class="feature"><div class="ic">♡</div><h3>Health Pro</h3><p>Track water, steps, sleep, exercise, and meditation with daily wellness goals.</p></div>
+          <div class="feature"><div class="ic">✦</div><h3>Optional AI</h3><p>Bring your own OpenAI, Anthropic, or Gemini key. The app is fully usable without it.</p></div>
+          <div class="feature"><div class="ic">⤓</div><h3>Local-first</h3><p>No cloud account, no telemetry, no tracking cookies. Web data lives in your browser's local storage; desktop data lives in a local file. Export backups anytime.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="download" style="background:linear-gradient(180deg, #0d0d0d, var(--black));">
+      <div class="wrap center">
+        <span class="eyebrow">Get it</span>
+        <h2 class="sec">Open it on every device</h2>
+        <p class="lead">The web app works everywhere, including your phone. Prefer a native window? Install the desktop build.</p>
+        <div class="downloads" style="text-align:left;">
+          <div class="dl primary">
+            <div class="ic">🌐</div>
+            <h3>Web &amp; Phone</h3>
+            <p>The lightweight version. Open instantly; on phone, tap "Add to Home Screen" to install.</p>
+            <a class="btn btn-gold" href="/app/">Launch app</a>
+          </div>
+          <div class="dl">
+            <div class="ic">⊞</div>
+            <h3>Windows</h3>
+            <p>Full-featured installer for Windows 10 and 11, including the Automation hub.</p>
+            <a class="btn btn-ghost" href="https://github.com/Philtonvanguard/pt-timeblock/releases/latest/download/PT-Time-Block-Timeline-Setup.exe">Download .exe</a>
+          </div>
+          <div class="dl">
+            <div class="ic"></div>
+            <h3>macOS</h3>
+            <p>.dmg build. Unsigned: first launch is right-click → Open.</p>
+            <a class="btn btn-ghost" href="https://github.com/Philtonvanguard/pt-timeblock/releases/latest/download/PT-Time-Block-Timeline.dmg">Download .dmg</a>
+          </div>
+          <div class="dl">
+            <div class="ic">🐧</div>
+            <h3>Linux</h3>
+            <p>AppImage (any distro) or .deb for Debian and Ubuntu.</p>
+            <a class="btn btn-ghost" href="https://github.com/Philtonvanguard/pt-timeblock/releases/latest/download/PT-Time-Block-Timeline.AppImage">AppImage</a>
+            <a class="btn btn-ghost" style="margin-top:8px" href="https://github.com/Philtonvanguard/pt-timeblock/releases/latest/download/PT-Time-Block-Timeline.deb">.deb</a>
+          </div>
+        </div>
+        <p style="margin-top:18px; font-size:13px; color:var(--faint);">
+          All builds and older versions: <a href="https://github.com/Philtonvanguard/pt-timeblock/releases" style="color:var(--silver); text-decoration:underline;">GitHub Releases</a>
+        </p>
+
+        <div style="margin-top:28px; max-width:760px; margin-left:auto; margin-right:auto; text-align:left; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 22px;">
+          <h3 style="font-size:15px; font-weight:700; margin-bottom:8px;">Where your data lives</h3>
+          <p style="font-size:13.5px; color:var(--muted); line-height:1.65;">
+            <b style="color:var(--text);">Web app:</b> everything you create is stored in your browser's local storage on your device. Nothing is sent to a server and no tracking cookies are used. That also means clearing this site's cookies or site data, or using private browsing, will erase your data — export a backup anytime from <b style="color:var(--text);">Settings → Data &amp; Storage</b> inside the app.<br /><br />
+            <b style="color:var(--text);">Desktop app:</b> your data is kept in a local file on your computer, so it survives browser cleanups. It also includes the full feature set, like the Automation hub, that the lighter web version leaves out.
+          </p>
+        </div>
+
+        <div class="capture" id="get-desktop">
+          <span class="eyebrow">Stay in the loop</span>
+          <h2 class="sec" style="font-size:24px;">Get notified about new releases</h2>
+          <p class="lead center">Windows, macOS, and Linux builds are live. Leave your email and we'll tell you when new versions and features land.</p>
+          <form id="subscribe">
+            <input type="email" name="email" placeholder="you@example.com" required aria-label="Email address" />
+            <button class="btn btn-gold" type="submit">Notify me</button>
+          </form>
+          <div class="msg" id="msg"></div>
+          <p class="note">We store your email only to send product updates. Unsubscribe anytime.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot-inner">
+      <div>© <span id="yr"></span> Vipelex LLC · PT Time Block Timeline</div>
+      <div>Control the flow, control the business.</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    const form = document.getElementById('subscribe');
+    const msg = document.getElementById('msg');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = new FormData(form).get('email');
+      msg.textContent = 'Submitting…'; msg.className = 'msg';
+      try {
+        const r = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        if (r.ok) {
+          msg.textContent = "You're on the list. Talk soon.";
+          msg.className = 'msg ok';
+          form.reset();
+        } else {
+          const d = await r.json().catch(() => ({}));
+          msg.textContent = d.error || 'Something went wrong. Try again.';
+          msg.className = 'msg err';
+        }
+      } catch {
+        msg.textContent = 'Network error. Try again.';
+        msg.className = 'msg err';
+      }
+    });
+  </script>
+</body>
+</html>
