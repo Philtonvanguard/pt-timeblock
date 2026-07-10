@@ -479,7 +479,7 @@ export function SettingsView() {
                 <h3 className="text-sm font-semibold text-white mb-2">About</h3>
                 <div className="space-y-1 text-xs text-slate-500">
                   <div className="flex justify-between"><span>App Name</span><span className="text-slate-400">PT Time Block Timeline</span></div>
-                  <div className="flex justify-between"><span>Version</span><span className="text-slate-400">1.1.0</span></div>
+                  <div className="flex justify-between"><span>Version</span><span className="text-slate-400">1.1.1</span></div>
                   <div className="flex justify-between"><span>Storage</span><span className="text-slate-400">{isWeb ? 'This browser (local storage)' : 'Local file (encrypted)'}</span></div>
                   <div className="flex justify-between"><span>AI Tokens</span><span className="text-slate-400">Direct API (no proxy)</span></div>
                 </div>

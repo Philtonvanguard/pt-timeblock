@@ -1,22 +1,26 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Menu, Sparkles } from 'lucide-react'
 import { useAppStore } from './store/appStore'
 import { TitleBar } from './components/layout/TitleBar'
 import { Sidebar } from './components/layout/Sidebar'
 import { Dashboard } from './components/layout/Dashboard'
-import { ProjectsView } from './components/projects/ProjectsView'
-import { TasksView } from './components/tasks/TasksView'
-import { TimeBlockView } from './components/timeblock/TimeBlockView'
-import { TimelineView } from './components/timeline/TimelineView'
-import { VisionBoardView } from './components/visionboard/VisionBoardView'
-import { HealthProView } from './components/health/HealthProView'
-import { AutomationView } from './components/automation/AutomationView'
-import { SettingsView } from './components/settings/SettingsView'
 import { NotificationStack } from './components/layout/NotificationStack'
 import { StorageNotice } from './components/layout/StorageNotice'
 import { isElectron } from './lib/platform'
 import { useMediaQuery } from './hooks/useMediaQuery'
 import { motion } from 'framer-motion'
+
+// Lazy-load everything except the Dashboard so the web build starts light.
+// The PWA precaches the split chunks, so offline still works; the desktop-only
+// Automation hub chunk is simply never fetched by the web build.
+const ProjectsView = lazy(() => import('./components/projects/ProjectsView').then(m => ({ default: m.ProjectsView })))
+const TasksView = lazy(() => import('./components/tasks/TasksView').then(m => ({ default: m.TasksView })))
+const TimeBlockView = lazy(() => import('./components/timeblock/TimeBlockView').then(m => ({ default: m.TimeBlockView })))
+const TimelineView = lazy(() => import('./components/timeline/TimelineView').then(m => ({ default: m.TimelineView })))
+const VisionBoardView = lazy(() => import('./components/visionboard/VisionBoardView').then(m => ({ default: m.VisionBoardView })))
+const HealthProView = lazy(() => import('./components/health/HealthProView').then(m => ({ default: m.HealthProView })))
+const AutomationView = lazy(() => import('./components/automation/AutomationView').then(m => ({ default: m.AutomationView })))
+const SettingsView = lazy(() => import('./components/settings/SettingsView').then(m => ({ default: m.SettingsView })))
 
 const views: Record<string, React.ComponentType> = {
   dashboard: Dashboard,
@@ -104,7 +108,9 @@ export default function App() {
               transition={{ duration: 0.2 }}
               className="h-full overflow-hidden"
             >
-              <ActiveView />
+              <Suspense fallback={<div className="h-full flex items-center justify-center text-slate-600 text-sm">Loading…</div>}>
+                <ActiveView />
+              </Suspense>
             </motion.div>
           </main>
         </div>
