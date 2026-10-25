@@ -1,0 +1,171 @@
+/* Vipelex Lux - metallic gold + premium motion system.
+   Palette sampled from the monogram reveal render.
+   Everything is namespaced .lux-* / --lux-* so it never collides with site CSS. */
+
+:root{
+  /* gold ramp, sampled straight off the render */
+  --lux-g1:#6B573A;  /* deep bronze shadow  */
+  --lux-g2:#A67C3D;  /* mid bronze          */
+  --lux-g3:#C4881C;  /* saturated amber     */
+  --lux-g4:#C9A467;  /* warm gold           */
+  --lux-g5:#D6BC8C;  /* light gold          */
+  --lux-g6:#EDD9B4;  /* champagne highlight */
+
+  /* The metal read comes from alternating bright/dark stops, not from one gold. */
+  --lux-metal:linear-gradient(135deg,
+    #8A6A2F 0%, #EDD9B4 14%, #C4881C 30%, #F3E3C0 46%,
+    #A67C3D 60%, #EDD9B4 76%, #B8862B 88%, #6B573A 100%);
+  --lux-metal-soft:linear-gradient(135deg,#C9A467 0%,#EDD9B4 40%,#A67C3D 75%,#D6BC8C 100%);
+  --lux-hairline:linear-gradient(90deg,transparent,rgba(212,175,55,.55),transparent);
+
+  --lux-ease:cubic-bezier(.16,1,.3,1);      /* settle */
+  --lux-ease-io:cubic-bezier(.65,0,.35,1);  /* symmetric */
+}
+
+/* ---------------------------------------------------------------- monogram */
+
+.lux-mark{
+  display:block;
+  width:100%;
+  height:auto;
+  overflow:visible;
+}
+/* Paint is set as a fill="" attribute on each path, because the gradient ids are
+   uid-suffixed per instance. Do NOT set fill here: CSS beats the attribute and
+   would point every mark at an id that does not exist. */
+.lux-mark__piece{
+  transform-box:fill-box;
+  transform-origin:center;
+}
+
+/* Pre-assembly state. Held until .is-in is added so the pieces do not flash
+   in place on slow connections. */
+.lux-mark[data-lux-anim] .lux-mark__piece{
+  opacity:0;
+  transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(.8);
+}
+.lux-mark[data-lux-anim].is-in .lux-mark__piece{
+  animation:luxAssemble 1150ms var(--lux-ease) both;
+  animation-delay:calc(var(--i) * 85ms);
+}
+@keyframes luxAssemble{
+  0%   {opacity:0; transform:translate(var(--tx),var(--ty)) rotate(var(--rot)) scale(.8);}
+  40%  {opacity:1;}
+  100% {opacity:1; transform:translate(0,0) rotate(0deg) scale(1);}
+}
+
+/* the bloom at the moment the pieces land */
+.lux-mark__flash{opacity:0; transform-box:fill-box; transform-origin:center;}
+.lux-mark[data-lux-anim].is-in .lux-mark__flash{
+  animation:luxFlash 900ms ease-out both;
+  animation-delay:620ms;
+}
+@keyframes luxFlash{
+  0%  {opacity:0;   transform:scale(.35);}
+  22% {opacity:.85; transform:scale(.9);}
+  100%{opacity:0;   transform:scale(1.5);}
+}
+
+/* specular sweep, clipped to the mark. Runs once on reveal, then idles slowly. */
+.lux-mark__sheen{opacity:0;}
+.lux-mark[data-lux-anim].is-in .lux-mark__sheen{
+  animation:luxSheen 1400ms ease-in-out 780ms both,
+            luxSheenIdle 7s ease-in-out 3.2s infinite;
+}
+@keyframes luxSheen{
+  0%  {opacity:0; transform:translateX(-1000px);}
+  15% {opacity:1;}
+  85% {opacity:1;}
+  100%{opacity:0; transform:translateX(1000px);}
+}
+@keyframes luxSheenIdle{
+  0%,100%{opacity:0; transform:translateX(-1000px);}
+  35%    {opacity:.55;}
+  70%    {opacity:0; transform:translateX(1000px);}
+}
+
+/* ------------------------------------------------------------ metallic type */
+
+.lux-metal-text{
+  background:var(--lux-metal);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  /* fallback for anything that cannot clip a gradient to text */
+  -webkit-text-fill-color:transparent;
+}
+@supports not ((-webkit-background-clip:text) or (background-clip:text)){
+  .lux-metal-text{color:var(--lux-g4); -webkit-text-fill-color:var(--lux-g4);}
+}
+
+.lux-rule{
+  height:1px; border:0; margin:0;
+  background:var(--lux-hairline);
+}
+
+/* --------------------------------------------------------- scroll reveal */
+
+.lux-reveal{
+  opacity:0;
+  transform:translateY(22px);
+  transition:opacity .85s var(--lux-ease), transform .85s var(--lux-ease);
+  transition-delay:calc(var(--i,0) * 80ms);
+  will-change:opacity,transform;
+}
+.lux-reveal.is-in{opacity:1; transform:none;}
+/* If JS never runs, content must still be visible. lux.js sets this flag. */
+html:not(.lux-js) .lux-reveal{opacity:1; transform:none;}
+
+/* ------------------------------------------------- surfaces that read costly */
+
+/* light sweep across a card or button on hover */
+.lux-sweep{position:relative; overflow:hidden; isolation:isolate;}
+.lux-sweep::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.13) 50%,transparent 62%);
+  transform:translateX(-120%);
+  transition:transform .85s var(--lux-ease);
+  pointer-events:none;
+  z-index:2;
+}
+.lux-sweep:hover::after,
+.lux-sweep:focus-visible::after{transform:translateX(120%);}
+
+/* gold hairline border that brightens on hover */
+.lux-edge{
+  border:1px solid rgba(212,175,55,.18);
+  transition:border-color .45s var(--lux-ease), box-shadow .45s var(--lux-ease), transform .45s var(--lux-ease);
+}
+.lux-edge:hover{
+  border-color:rgba(212,175,55,.45);
+  box-shadow:0 18px 50px -20px rgba(196,136,28,.45);
+  transform:translateY(-3px);
+}
+
+/* centre spotlight + vignette. Put on a section, not on body, so it composites cheaply. */
+.lux-spotlight{position:relative; isolation:isolate;}
+.lux-spotlight::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(120% 80% at 50% 12%, rgba(196,136,28,.10), transparent 60%),
+    radial-gradient(100% 70% at 50% 50%, rgba(255,255,255,.035), transparent 70%);
+  pointer-events:none;
+  z-index:-1;
+}
+
+/* ------------------------------------------------------------ reduced motion */
+/* Never animate for people who asked us not to. Final state, immediately. */
+@media (prefers-reduced-motion:reduce){
+  .lux-mark[data-lux-anim] .lux-mark__piece,
+  .lux-mark[data-lux-anim].is-in .lux-mark__piece{
+    animation:none; opacity:1; transform:none;
+  }
+  .lux-mark[data-lux-anim].is-in .lux-mark__sheen,
+  .lux-mark[data-lux-anim].is-in .lux-mark__flash{animation:none; opacity:0;}
+  .lux-reveal{opacity:1; transform:none; transition:none;}
+  .lux-sweep::after{display:none;}
+  .lux-edge{transition:none;}
+  .lux-edge:hover{transform:none;}
+}

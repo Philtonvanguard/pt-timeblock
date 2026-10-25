@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PT Time Block Timeline — One workspace for your day</title>
-  <meta name="description" content="Projects, tasks, time blocking, timeline, vision board, and health in one focused workspace. Runs in your browser, installs on your phone, works on desktop. Your data stays on your device." />
+  <meta name="description" content="Projects, tasks, time blocking, timeline, vision board and health in one workspace. Runs in your browser, phone or desktop. Your data stays on your device." />
+  <link rel="canonical" href="https://timeblock.vipelex.com/" />
   <meta name="theme-color" content="#0a0a0a" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -13,11 +14,15 @@
   <meta property="og:title" content="PT Time Block Timeline" />
   <meta property="og:description" content="One focused workspace for projects, tasks, time blocking, timeline, vision board, and health. Open it on any device." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="/pwa-512x512.png" />
+  <meta property="og:image" content="https://timeblock.vipelex.com/pwa-512x512.png" />
+  <meta property="og:url" content="https://timeblock.vipelex.com/" />
+  <meta name="twitter:card" content="summary" />
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "PT Time Block Timeline", "applicationCategory": "BusinessApplication", "operatingSystem": "Web, Windows, macOS, Linux", "description": "Projects, tasks, time blocking, timeline, vision board and health in one workspace. Your data stays on your device.", "url": "https://timeblock.vipelex.com/", "image": "https://timeblock.vipelex.com/pwa-512x512.png", "publisher": {"@type": "Organization", "name": "Vipelex LLC", "url": "https://vipelex.com"}}</script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/lux.css" />
   <style>
     :root {
       --black: #0a0a0a;
@@ -29,7 +34,7 @@
       --silver: #c0c0c0;
       --text: #f1f5f9;
       --muted: #94a3b8;
-      --faint: #64748b;
+      --faint: #7a8aa1; /* was #64748b, 3.9:1 on the cards */
       --line: rgba(255,255,255,0.07);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -45,7 +50,7 @@
     .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
     .gold { color: var(--gold-bright); }
     .grad {
-      background: linear-gradient(110deg, var(--gold-bright), var(--silver));
+      background: linear-gradient(110deg, #C4881C 0%, #F3E3C0 18%, #E6CC5C 34%, #FFF6DC 50%, #C9A467 66%, #F0D878 82%, #C4881C 100%);
       -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     }
 
@@ -55,7 +60,7 @@
       padding: 13px 22px; border-radius: 10px; font-weight: 600; font-size: 15px;
       transition: all .18s ease; cursor: pointer; border: 1px solid transparent;
     }
-    .btn-gold { background: var(--gold); color: #0a0a0a; }
+    .btn-gold { background: linear-gradient(110deg, #C4881C 0%, #F3E3C0 18%, #E6CC5C 34%, #FFF6DC 50%, #C9A467 66%, #F0D878 82%, #C4881C 100%); color: #0a0a0a; }
     .btn-gold:hover { background: var(--gold-bright); transform: translateY(-1px); }
     .btn-ghost { background: transparent; color: var(--text); border-color: var(--line); }
     .btn-ghost:hover { border-color: rgba(212,175,55,.4); color: #fff; }
@@ -169,9 +174,11 @@
       .downloads { grid-template-columns: 1fr; }
       .nav .btn-ghost { display: none; }
     }
+    .skip-link{position:absolute;left:-9999px;top:0;z-index:10001;background:#D4AF37;color:#0A0A0A;padding:10px 18px;font-weight:700;text-decoration:none;border-radius:0 0 6px 0}.skip-link:focus{left:0}
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="nav">
     <div class="wrap nav-inner">
       <a class="brand" href="/">
@@ -180,19 +187,19 @@
       </a>
       <nav style="display:flex; gap:10px; align-items:center;">
         <a class="btn btn-ghost" href="#download">Download</a>
-        <a class="btn btn-gold" href="/app/">Launch app</a>
+        <a class="btn btn-gold lux-sweep" href="/app/">Launch app</a>
       </nav>
     </div>
   </header>
 
-  <main>
+  <main id="main">
     <section class="hero">
       <div class="wrap">
         <span class="pill">● One workspace. Every device.</span>
-        <h1>Stop switching apps.<br /><span class="grad">Run your whole day in one place.</span></h1>
-        <p class="sub">Projects, tasks, time blocking, timeline, a vision board, and health tracking, in a single focused workspace. Open it in your browser, install it on your phone, or run it on your desktop.</p>
-        <div class="cta-row">
-          <a class="btn btn-gold" href="/app/">Launch the app →</a>
+        <h1 class="lux-reveal">Stop switching apps.<br /><span class="grad">Run your whole day in one place.</span></h1>
+        <p class="sub lux-reveal">Projects, tasks, time blocking, timeline, a vision board, and health tracking, in a single focused workspace. Open it in your browser, install it on your phone, or run it on your desktop.</p>
+        <div class="cta-row lux-reveal">
+          <a class="btn btn-gold lux-sweep" href="/app/">Launch the app →</a>
           <a class="btn btn-ghost" href="#download">Get the desktop app</a>
         </div>
         <p class="trust"><b>No account needed.</b> &nbsp;·&nbsp; <b>Works offline.</b> &nbsp;·&nbsp; <b>Your data stays on your device.</b></p>
@@ -219,15 +226,15 @@
         <h2 class="sec">Everything your day needs, nothing it doesn't</h2>
         <p class="lead">Each module is built to do one job well. Together they replace a stack of half-used apps.</p>
         <div class="grid" style="text-align:left;">
-          <div class="feature"><div class="ic">▦</div><h3>Dashboard</h3><p>Your day at a glance. Active projects, tasks due, time blocks, and health progress in one view.</p></div>
-          <div class="feature"><div class="ic">▤</div><h3>Projects</h3><p>Kanban-style project tracking with status, milestones, and optional AI planning.</p></div>
-          <div class="feature"><div class="ic">☑</div><h3>Tasks</h3><p>Full task management with subtasks, priorities, due dates, tags, and filtering.</p></div>
-          <div class="feature"><div class="ic">◷</div><h3>Time Blocking</h3><p>A visual daily grid for blocking focused work sessions and protecting deep work.</p></div>
-          <div class="feature"><div class="ic">⎇</div><h3>Timeline</h3><p>A project timeline with milestone tracking and deadline visualization.</p></div>
-          <div class="feature"><div class="ic">▢</div><h3>Vision Board</h3><p>A drag-and-drop canvas for images, quotes, and goals across multiple boards.</p></div>
-          <div class="feature"><div class="ic">♡</div><h3>Health Pro</h3><p>Track water, steps, sleep, exercise, and meditation with daily wellness goals.</p></div>
-          <div class="feature"><div class="ic">✦</div><h3>Optional AI</h3><p>Bring your own OpenAI, Anthropic, or Gemini key. The app is fully usable without it.</p></div>
-          <div class="feature"><div class="ic">⤓</div><h3>Local-first</h3><p>No cloud account, no telemetry, no tracking cookies. Web data lives in your browser's local storage; desktop data lives in a local file. Export backups anytime.</p></div>
+          <div class="feature lux-reveal"><div class="ic">▦</div><h3>Dashboard</h3><p>Your day at a glance. Active projects, tasks due, time blocks, and health progress in one view.</p></div>
+          <div class="feature lux-reveal"><div class="ic">▤</div><h3>Projects</h3><p>Kanban-style project tracking with status, milestones, and optional AI planning.</p></div>
+          <div class="feature lux-reveal"><div class="ic">☑</div><h3>Tasks</h3><p>Full task management with subtasks, priorities, due dates, tags, and filtering.</p></div>
+          <div class="feature lux-reveal"><div class="ic">◷</div><h3>Time Blocking</h3><p>A visual daily grid for blocking focused work sessions and protecting deep work.</p></div>
+          <div class="feature lux-reveal"><div class="ic">⎇</div><h3>Timeline</h3><p>A project timeline with milestone tracking and deadline visualization.</p></div>
+          <div class="feature lux-reveal"><div class="ic">▢</div><h3>Vision Board</h3><p>A drag-and-drop canvas for images, quotes, and goals across multiple boards.</p></div>
+          <div class="feature lux-reveal"><div class="ic">♡</div><h3>Health Pro</h3><p>Track water, steps, sleep, exercise, and meditation with daily wellness goals.</p></div>
+          <div class="feature lux-reveal"><div class="ic">✦</div><h3>Optional AI</h3><p>Bring your own OpenAI, Anthropic, or Gemini key. The app is fully usable without it.</p></div>
+          <div class="feature lux-reveal"><div class="ic">⤓</div><h3>Local-first</h3><p>No cloud account, no telemetry, no tracking cookies. Web data lives in your browser's local storage; desktop data lives in a local file. Export backups anytime.</p></div>
         </div>
       </div>
     </section>
@@ -242,7 +249,7 @@
             <div class="ic">🌐</div>
             <h3>Web &amp; Phone</h3>
             <p>The lightweight version. Open instantly; on phone, tap "Add to Home Screen" to install.</p>
-            <a class="btn btn-gold" href="/app/">Launch app</a>
+            <a class="btn btn-gold lux-sweep" href="/app/">Launch app</a>
           </div>
           <div class="dl">
             <div class="ic">⊞</div>
@@ -293,7 +300,8 @@
 
   <footer>
     <div class="wrap foot-inner">
-      <div>© <span id="yr"></span> Vipelex LLC · PT Time Block Timeline</div>
+      <div style="display:flex;align-items:center;gap:11px"><span data-lux-mark style="width:26px;flex:0 0 26px;display:block"></span><span>© <span id="yr"></span> Vipelex LLC · PT Time Block Timeline</span></div>
+      <div><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/accessibility">Accessibility</a></div>
       <div>Control the flow, control the business.</div>
     </div>
   </footer>
@@ -327,5 +335,6 @@
       }
     });
   </script>
+  <script src="/lux.js" defer></script>
 </body>
 </html>
