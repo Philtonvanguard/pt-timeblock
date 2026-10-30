@@ -105,7 +105,7 @@
     "imap-simple": "^5.1.0",
     "lucide-react": "^1.9.0",
     "node-cron": "^4.2.1",
-    "nodemailer": "^8.0.5",
+    "nodemailer": "^10.1.4",
     "openai": "^6.34.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
